@@ -1,27 +1,24 @@
 import { FC } from "react"
+import { useSelector } from "react-redux"
+import { selectCounter } from "../../../../../app/redux/store/counterStore"
 
 import s from './BoardCounter.module.css'
 
 type BoardCounterPropType = {
-    startValue: number
-    maxValue: number
-    counter: number
     value: number | string
 }
 
-export const BoardCounter: FC<BoardCounterPropType> = ({
-    startValue,
-    maxValue,
-    counter,
-    value }) => {
+export const BoardCounter: FC<BoardCounterPropType> = ({ value }) => {
+    const { startValue, maxValue, counter } = useSelector(selectCounter)
 
     const hasError = maxValue < startValue || startValue < 0 || maxValue === startValue
     const isMaxValue = maxValue === counter && !hasError;
 
     const displayValue = hasError ? "Incorrect Value" : value;
-    const styles = `${hasError ? s.error : ''}
+
+    const styles = `${hasError ? s.error : ' '}
                     ${typeof displayValue === 'number' ? s.number : s.text}
-                    ${isMaxValue}`
+                    ${isMaxValue ? s.error : ''}`
 
     return (
         <div className={s.board}>
@@ -31,4 +28,3 @@ export const BoardCounter: FC<BoardCounterPropType> = ({
         </div>
     )
 }
-
