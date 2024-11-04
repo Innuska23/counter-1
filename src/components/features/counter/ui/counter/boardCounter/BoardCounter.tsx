@@ -1,6 +1,6 @@
-import { FC } from "react"
+import { FC, memo, useMemo } from "react"
 import { useSelector } from "react-redux"
-import { selectCounter } from "../../../../../app/redux/store/counterStore"
+import { selectCounter } from "../../../../../app/store/counterStore"
 
 import s from './BoardCounter.module.css'
 
@@ -8,17 +8,32 @@ type BoardCounterPropType = {
     value: number | string
 }
 
-export const BoardCounter: FC<BoardCounterPropType> = ({ value }) => {
+export const BoardCounter: FC<BoardCounterPropType> = memo(({ value }) => {
+
     const { startValue, maxValue, counter } = useSelector(selectCounter)
 
-    const hasError = maxValue < startValue || startValue < 0 || maxValue === startValue
-    const isMaxValue = maxValue === counter && !hasError;
+    const hasError = useMemo(() =>
+        maxValue < startValue || startValue < 0 || maxValue === startValue,
+        [maxValue, startValue]
+    )
 
-    const displayValue = hasError ? "Incorrect Value" : value;
+    const isMaxValue = useMemo(() =>
+        maxValue === counter && !hasError,
+        [maxValue, counter, hasError]
+    )
 
-    const styles = `${hasError ? s.error : ' '}
-                    ${typeof displayValue === 'number' ? s.number : s.text}
-                    ${isMaxValue ? s.error : ''}`
+    const displayValue = useMemo(() =>
+        hasError ? "Incorrect Value" : value,
+        [hasError, value]
+    )
+
+    const styles = useMemo(() =>
+        `${hasError ? s.error : ' '}
+         ${typeof displayValue === 'number' ? s.number : s.text}
+         ${isMaxValue ? s.error : ''}`,
+        [hasError, displayValue, isMaxValue]
+    )
+
 
     return (
         <div className={s.board}>
@@ -27,4 +42,4 @@ export const BoardCounter: FC<BoardCounterPropType> = ({ value }) => {
             </span>
         </div>
     )
-}
+})

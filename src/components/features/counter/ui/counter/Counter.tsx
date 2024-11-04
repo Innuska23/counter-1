@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectCounter } from "../../../../app/redux/store/counterStore";
+import { selectCounter } from "../../../../app/store/counterStore";
 import { incrementCounterAC, resetCounterAC, setCounterAC } from "../../model/counter-reducer";
 
 import { Button } from "../../../../common/components/button/Button";
@@ -9,7 +9,7 @@ import { SetCounter } from "./setCounter/SetCounter";
 import { BoardCounter } from "./boardCounter/BoardCounter";
 
 
-export const Counter = () => {
+export const Counter = memo(() => {
 
     const { startValue, maxValue, counter: currentCounter } = useSelector(selectCounter)
 
@@ -36,17 +36,17 @@ export const Counter = () => {
         localStorage.setItem('isSet', JSON.stringify(isSet))
     }, [maxValue, startValue, currentCounter, isSet])
 
-    const incHandler = () => dispatch(incrementCounterAC());
+    const incHandler = useCallback(() => dispatch(incrementCounterAC()), [dispatch]);
 
-    const setHandler = () => {
+    const setHandler = useCallback(() => {
         dispatch(setCounterAC())
         setIsSet(true)
-    }
+    }, [dispatch])
 
-    const resetHandler = () => {
+    const resetHandler = useCallback(() => {
         dispatch(resetCounterAC())
         setIsSet(false)
-    }
+    }, [dispatch])
 
     return (
         <>
@@ -80,4 +80,4 @@ export const Counter = () => {
             </div>
         </>
     )
-}
+})

@@ -5,22 +5,22 @@ export type IncrementCounterActionType = {
     type: 'INCREMENT_COUNTER'
 }
 
-export type resetCounterActionType = {
+export type ResetCounterActionType = {
     type: 'RESET_COUNTER'
 }
 
-export type setCounterActionType = {
+export type SetCounterActionType = {
     type: 'SET_COUNTER'
 }
 
-export type updateMaxValueCounterActionType = {
+export type UpdateMaxValueCounterActionType = {
     type: 'MAX_VALUE_COUNTER'
     payload: {
         value: number
     }
 }
 
-export type updateStartValueCounterActionType = {
+export type UpdateStartValueCounterActionType = {
     type: 'START_VALUE_COUNTER'
     payload: {
         value: number
@@ -29,10 +29,10 @@ export type updateStartValueCounterActionType = {
 
 type ActionsType =
     | IncrementCounterActionType
-    | resetCounterActionType
-    | setCounterActionType
-    | updateMaxValueCounterActionType
-    | updateStartValueCounterActionType
+    | ResetCounterActionType
+    | SetCounterActionType
+    | UpdateMaxValueCounterActionType
+    | UpdateStartValueCounterActionType
 
 const savedState = loadFromLocalStorage()
 
