@@ -10,7 +10,9 @@ type BoardCounterPropType = {
 
 export const BoardCounter: FC<BoardCounterPropType> = memo(({ value }) => {
 
-    const { startValue, maxValue, counter } = useSelector(selectCounter)
+    const { startValue } = useSelector(selectCounter)
+    const { counter } = useSelector(selectCounter)
+    const { maxValue } = useSelector(selectCounter)
 
     const hasError = useMemo(() =>
         maxValue < startValue || startValue < 0 || maxValue === startValue,

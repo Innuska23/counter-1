@@ -11,7 +11,9 @@ import { BoardCounter } from "./boardCounter/BoardCounter";
 
 export const Counter = memo(() => {
 
-    const { startValue, maxValue, counter: currentCounter } = useSelector(selectCounter)
+    const { startValue } = useSelector(selectCounter)
+    const { maxValue } = useSelector(selectCounter)
+    const { counter: currentCounter } = useSelector(selectCounter)
 
     const dispatch = useDispatch()
 
@@ -36,17 +38,17 @@ export const Counter = memo(() => {
         localStorage.setItem('isSet', JSON.stringify(isSet))
     }, [maxValue, startValue, currentCounter, isSet])
 
-    const incHandler = useCallback(() => dispatch(incrementCounterAC()), [dispatch]);
+    const incHandler = useCallback(() => dispatch(incrementCounterAC(currentCounter, maxValue)), [dispatch, currentCounter, maxValue]);
 
     const setHandler = useCallback(() => {
-        dispatch(setCounterAC())
+        dispatch(setCounterAC(startValue, maxValue))
         setIsSet(true)
-    }, [dispatch])
+    }, [dispatch, startValue, maxValue])
 
     const resetHandler = useCallback(() => {
-        dispatch(resetCounterAC())
+        dispatch(resetCounterAC(startValue))
         setIsSet(false)
-    }, [dispatch])
+    }, [dispatch, startValue])
 
     return (
         <>

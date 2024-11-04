@@ -2,16 +2,18 @@ import { ChangeEvent, FC, memo, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Input } from "../../../../../common/components/input/Input";
-import { RootState } from "../../../../../app/store/store";
+
 import { setMaxValueAC, setStartValueAC } from "../../../model/counter-reducer";
 
 import s from './SetCounter.module.css';
+import { selectCounter } from "../../../../../app/store/counterStore";
 
 export const SetCounter: FC = memo(() => {
 
     const dispatch = useDispatch();
 
-    const { startValue, maxValue } = useSelector((state: RootState) => state.counter);
+    const { startValue } = useSelector(selectCounter);
+    const { maxValue } = useSelector(selectCounter);
 
     const checkMaxValueError = useCallback((max: number, start: number) => {
         return max < start || max < 0 || max === start;
